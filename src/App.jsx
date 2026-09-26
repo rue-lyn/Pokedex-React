@@ -165,7 +165,7 @@ function App() {
 
 
                         {/* IMAGE */}
-                  <im
+                  <img
                     src={
                       selectedPokemon.sprites.other[
                         "official-artwork"

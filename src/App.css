@@ -61,6 +61,7 @@ body {
     width: 90%;
     max-width: 1400px;
     margin: 0 auto 40px;
+
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 25px;
@@ -74,12 +75,17 @@ body {
     padding: 25px;
     text-align: center;
     border-radius: 20px;
+
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
     transition: 0.2s;
+
+    cursor: pointer;
 }
 
 .pokemon-card:hover {
     transform: translateY(-5px);
+
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -123,8 +129,11 @@ body {
 .type {
     padding: 6px 12px;
     border-radius: 20px;
+
     color: white;
+
     font-size: 13px;
+
     text-transform: capitalize;
 }
 
@@ -227,7 +236,6 @@ body {
     text-align: center;
     margin: 50px 20px;
     color: #e3350d;
-  
 }
 
 
@@ -239,9 +247,149 @@ body {
 }
 
 
+/* ========================= */
+/* POKÉMON DETAILS */
+/* ========================= */
+
+
+/* DARK BACKGROUND */
+
+.details-container {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+
+/* DETAILS CARD */
+
+.details-card {
+    background-color: white;
+
+    width: 100%;
+    max-width: 450px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    position: relative;
+}
+
+
+/* CLOSE BUTTON */
+
+.close-button {
+    position: absolute;
+
+    top: 10px;
+    right: 15px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 30px;
+
+    color: #777;
+
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #e3350d;
+}
+
+
+/* DETAILS IMAGE */
+
+.details-card img {
+    width: 200px;
+    height: 200px;
+
+    object-fit: contain;
+}
+
+
+/* DETAILS NAME */
+
+.details-card h2 {
+    margin: 5px 0;
+
+    font-size: 28px;
+
+    text-transform: capitalize;
+}
+
+
+/* DETAILS INFORMATION */
+
+.details-info {
+    margin-top: 20px;
+
+    text-align: left;
+
+    border-top: 1px solid #ddd;
+
+    padding-top: 15px;
+}
+
+.details-info p {
+    margin: 10px 0;
+}
+
+
+/* BASE STATS */
+
+.stats {
+    margin-top: 20px;
+
+    text-align: left;
+}
+
+.stats h3 {
+    text-align: center;
+
+    color: #e3350d;
+}
+
+.stat {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 7px 0;
+
+    border-bottom: 1px solid #eee;
+
+    text-transform: capitalize;
+}
+
+
 /* LARGE TABLET */
 
 @media (max-width: 1100px) {
+
     .pokemon-container {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -252,8 +400,10 @@ body {
 /* TABLET */
 
 @media (max-width: 800px) {
+
     .pokemon-container {
         grid-template-columns: repeat(2, 1fr);
+
         gap: 20px;
     }
 
@@ -263,6 +413,7 @@ body {
 /* PHONE */
 
 @media (max-width: 550px) {
+
     .header {
         padding: 30px 15px;
     }
@@ -281,7 +432,9 @@ body {
 
     .pokemon-container {
         width: 90%;
+
         grid-template-columns: 1fr;
+
         gap: 20px;
     }
 
@@ -290,6 +443,18 @@ body {
     }
 
     .pokemon-card img {
+        width: 160px;
+        height: 160px;
+    }
+
+
+    /* DETAILS ON PHONE */
+
+    .details-card {
+        padding: 20px;
+    }
+
+    .details-card img {
         width: 160px;
         height: 160px;
     }

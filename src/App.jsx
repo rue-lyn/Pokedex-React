@@ -10,17 +10,25 @@ function App() {
   useEffect(() => {
     async function getPokemon() {
       try {
-        // Get all Pokémon from PokéAPI
+        // Get 1,025 unique Pokémon species
         const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=1351"
+          "https://pokeapi.co/api/v2/pokemon-species?limit=1025"
         );
 
         const data = await response.json();
 
-        // Get the details of every Pokémon
+        // Get Pokémon details
         const pokemonData = await Promise.all(
           data.results.map(async (item) => {
-            const response = await fetch(item.url);
+            const pokemonId = item.url
+              .split("/")
+              .filter(Boolean)
+              .pop();
+
+            const response = await fetch(
+              `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+            );
+
             return response.json();
           })
         );
@@ -55,14 +63,12 @@ function App() {
       {/* SEARCH */}
 
       <div className="search-container">
-
         <input
           type="text"
           placeholder="Search Pokémon..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
       </div>
 
 
@@ -92,9 +98,8 @@ function App() {
 
               <img
                 src={
-                  item.sprites.other[
-                    "official-artwork"
-                  ].front_default
+                  item.sprites.other["official-artwork"]
+                    .front_default
                 }
                 alt={item.name}
               />
@@ -130,7 +135,7 @@ function App() {
               </div>
 
 
-              {/* BASIC INFORMATION */}
+              {/* INFORMATION */}
 
               <div className="info">
 
@@ -227,7 +232,7 @@ function App() {
             </div>
 
 
-            {/* INFORMATION */}
+            {/* DETAILS */}
 
             <div className="details-info">
 

@@ -2,32 +2,29 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-    const [pokemon, setPokemon] = useState([]);
-    const [search, setSearch] = useState("");
-    const [loading, setLoading] = useState(true);
-    const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [pokemon, setPokemon] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
-    useEffect(() => {
-        async function getPokemon() {
-            try {
-                const response = await fetch(
-                    "https://pokeapi.co/api/v2/pokemon?limit=50"
+  useEffect(() => {
+    async function getPokemon() {
+    try {
+      const response = await fetch( "https://pokeapi.co/api/v2/pokemon?limit=50" );
+
+       const data = await response.json();
+       const pokemonData = await Promise.all(
+          data.results.map(async (item) => {
+            const response = await fetch(item.url);
+              return response.json();
+                  })
                 );
 
-                const data = await response.json();
-
-                const pokemonData = await Promise.all(
-                    data.results.map(async (item) => {
-                        const response = await fetch(item.url);
-                        return response.json();
-                    })
-                );
-
-                setPokemon(pokemonData);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
-                setLoading(false);
+          setPokemon(pokemonData);
+          setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
             }
         }
 
@@ -35,77 +32,79 @@ function App() {
     }, []);
 
     const filteredPokemon = pokemon.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase())
+      item.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
-        <div>
+      <div>
 
-            {/* HEADER */}
-            <div className="header">
-                <h1>Pokédex</h1>
-                <p>Explore the world of Pokémon</p>
+       {/* HEADER */}
+         <div className="header">
+           <h1>Pokédex</h1>
+            <p>Explore the world of Pokémon</p>
             </div>
 
 
             {/* SEARCH */}
-            <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Search Pokémon..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+        <div className="search-container">
+              <input
+
+              type="text"
+              placeholder="Search Pokémon..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
 
 
             {/* LOADING */}
-            {loading && (
-                <h2 className="loading">
-                    Loading Pokémon...
-                </h2>
+        {loading && (
+            <h2 className="loading">
+                Loading Pokémon...
+           </h2>
             )}
 
 
             {/* POKÉMON CONTAINER */}
-            {!loading && (
-                <div className="pokemon-container">
+        {!loading && (
+            <div className="pokemon-container">
 
-                    {filteredPokemon.map((item) => (
+              {filteredPokemon.map((item) => (
 
-                        <div
-                            className="pokemon-card"
-                            key={item.id}
-                            onClick={() => setSelectedPokemon(item)}
-                        >
+                <div
+                 className="pokemon-card"
+                key={item.id}
+                onClick={() => setSelectedPokemon(item)}
+                >
 
-                            <img
-                                src={
-                                    item.sprites.other[
-                                        "official-artwork"
-                                    ].front_default
-                                }
-                                alt={item.name}
+                 <img
+                   src={
+                    item.sprites.other[
+                     "official-artwork"
+                      ].front_default
+                        }
+
+                        alt={item.name}
                             />
 
-                            <h2>{item.name}</h2>
+                          <h2>{item.name}</h2>
 
-                            <p className="number">
-                                #{String(item.id).padStart(3, "0")}
-                            </p>
+                          <p className="number">
+                            #{String(item.id).padStart(3, "0")}
+                          </p>
 
 
                             {/* TYPES */}
-                            <div className="types">
+                        <div className="types">
 
-                                {item.types.map((type) => (
+                          {item.types.map((type) => (
 
-                                    <span
-                                        className={"type " + type.type.name}
-                                        key={type.type.name}
-                                    >
-                                        {type.type.name}
-                                    </span>
+                           <span
+                             className={"type " + type.type.name}
+                             key={type.type.name}
+                              >
+                                  {type.type.name}
+                                </span>
 
                                 ))}
 
@@ -113,17 +112,17 @@ function App() {
 
 
                             {/* BASIC INFORMATION */}
-                            <div className="info">
+                          <div className="info">
 
-                                <p>
-                                    Height: {item.height / 10} m
-                                </p>
+                            <p>
+                                Height: {item.height / 10} m
+                            </p>
 
-                                <p>
-                                    Weight: {item.weight / 10} kg
-                                </p>
+                            <p>
+                                 Weight: {item.weight / 10} kg
+                            </p>
 
-                            </div>
+                           </div>
 
                         </div>
 
@@ -144,112 +143,114 @@ function App() {
             {/* POKÉMON DETAILS */}
             {selectedPokemon && (
 
-                <div
-                    className="details-container"
-                    onClick={() => setSelectedPokemon(null)}
-                >
 
-                    <div
-                        className="details-card"
-                        onClick={(e) => e.stopPropagation()}
-                    >
+              <div
+                className="details-container"
+                onClick={() => setSelectedPokemon(null)}
+              >
+
+              <div
+                className="details-card"
+                onClick={(e) => e.stopPropagation()}
+              >
+      
 
                         {/* CLOSE BUTTON */}
-                        <button
-                            className="close-button"
-                            onClick={() => setSelectedPokemon(null)}
-                        >
+                <button
+                  className="close-button"
+                  onClick={() => setSelectedPokemon(null)}
+                >
                             ×
-                        </button>
+                </button>
 
 
                         {/* IMAGE */}
-                        <img
-                            src={
-                                selectedPokemon.sprites.other[
-                                    "official-artwork"
-                                ].front_default
-                            }
-                            alt={selectedPokemon.name}
-                        />
+                  <im
+                    src={
+                      selectedPokemon.sprites.other[
+                        "official-artwork"
+                      ].front_default
+                          }
+                         alt={selectedPokemon.name}
+                  />
 
 
                         {/* NAME */}
-                        <h2>{selectedPokemon.name}</h2>
+                  <h2>{selectedPokemon.name}</h2>
 
-                        <p className="number">
-                            #{String(selectedPokemon.id).padStart(3, "0")}
-                        </p>
+                    <p className="number">
+                        #{String(selectedPokemon.id).padStart(3, "0")}
+                    </p>
 
 
                         {/* TYPES */}
-                        <div className="types">
+                    <div className="types">
 
-                            {selectedPokemon.types.map((type) => (
+                      {selectedPokemon.types.map((type) => (
 
-                                <span
-                                    className={"type " + type.type.name}
-                                    key={type.type.name}
-                                >
-                                    {type.type.name}
-                                </span>
+                        <span
+                          className={"type " + type.type.name}
+                          key={type.type.name}
+                        >
+                            {type.type.name}
+                        </span>
 
-                            ))}
+                       ))}
 
-                        </div>
+                    </div>
 
 
                         {/* INFORMATION */}
-                        <div className="details-info">
+                    <div className="details-info">
 
-                            <p>
-                                <strong>Height:</strong>{" "}
-                                {selectedPokemon.height / 10} m
-                            </p>
+                      <p>
+                         <strong>Height:</strong>{" "}
+                         {selectedPokemon.height / 10} m
+                      </p>
 
-                            <p>
-                                <strong>Weight:</strong>{" "}
-                                {selectedPokemon.weight / 10} kg
-                            </p>
+                      <p>
+                          <strong>Weight:</strong>{" "}
+                          {selectedPokemon.weight / 10} kg
+                      </p>
 
-                            <p>
-                                <strong>Abilities:</strong>{" "}
-                                {selectedPokemon.abilities
-                                    .map(
-                                        (ability) =>
-                                            ability.ability.name
-                                    )
-                                    .join(", ")}
-                            </p>
+                      <p>
+                          <strong>Abilities:</strong>{" "}
+                            {selectedPokemon.abilities
+                              .map(
+                                (ability) =>
+                                  ability.ability.name
+                              )
+                                .join(", ")}
+                      </p>
 
-                        </div>
+                      </div>
 
 
                         {/* BASE STATS */}
-                        <div className="stats">
+                      <div className="stats">
 
-                            <h3>Base Stats</h3>
+                        <h3>Base Stats</h3>
 
-                            {selectedPokemon.stats.map((stat) => (
+                        {selectedPokemon.stats.map((stat) => (
 
-                                <div
-                                    className="stat"
-                                    key={stat.stat.name}
-                                >
+                          <div
+                            className="stat"
+                            key={stat.stat.name}
+                          >
 
-                                    <span>
-                                        {stat.stat.name}
-                                    </span>
+                          <span>
+                            {stat.stat.name}
+                          </span>
 
-                                    <span>
-                                        {stat.base_stat}
-                                    </span>
+                          <span>
+                            {stat.base_stat}
+                          </span>
 
-                                </div>
+                          </div>
 
-                            ))}
+                      ))}
 
-                        </div>
+                       </div>
 
                     </div>
 
